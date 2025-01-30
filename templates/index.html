@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Management Portal</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script>
+        function registerClick(title) {
+            fetch('/ads/click', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: title })
+            }).catch(error => console.error('Error:', error));
+        }
+    </script>
+
+</head>
+<body>
+    <h2>Ad Management Portal</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Clicks</th>
+                <th>Views</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ad in ads %}
+            <tr>
+                <td>{{ ad.title }}</td>
+                <td>{{ ad.description }}</td>
+                <td><img src="{{ ad.image_url }}" width="100"></td>
+                <td>{{ ad.clicks if ad.clicks else 0 }}</td>
+                <td>{{ ad.views }}</td>
+                <td>
+                    <form action="/delete_ad" method="post">
+                        <input type="hidden" name="title" value="{{ ad.title }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Add New Ad</h3>
+    <form action="/add_ad" method="post">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="text" name="description" placeholder="Description" required>
+        <input type="url" name="image_url" placeholder="Image URL" required>
+        <input type="url" name="click_url" placeholder="Click URL" required>
+        <button type="submit">Add Ad</button>
+    </form>
+</body>
+</html>
