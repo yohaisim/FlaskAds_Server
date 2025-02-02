@@ -8,7 +8,7 @@ CORS(app)
 
 # ---------------------- DATABASE CONNECTION ----------------------
 try:
-    MONGO_URI = "mongodb+srv://yohaisimhony:i33Gp5UYfnhchk7r@cluster0.29ufd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    MONGO_URI = os.environ.get("MONGO_URI")
     client = MongoClient(MONGO_URI)
     db = client["ads_db"]
     ads_collection = db["ads"]
